@@ -1,0 +1,24 @@
+#cloud-config
+timezone: America/New_York
+hostname: ${hostname}
+users:
+  - name: root
+    ssh_authorized_keys:
+    - ssh-rsa redacted
+    - ssh-ed25519 redacted
+    hashed_passwd: redacted
+ssh_pwauth: false
+write_files:
+- content: |
+    ${hostname}
+  path: /etc/salt/minion_id
+  append: false
+salt_minion:
+    service_name: salt-minion
+    config_dir: /etc/salt
+    conf:
+        master: saltmaster-1.testdomain.local
+    grains:
+      deployment: terraform
+      hypervisor: rainbow1
+resize_rootfs: noblock
